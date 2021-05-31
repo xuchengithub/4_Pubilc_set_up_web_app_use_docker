@@ -1,13 +1,17 @@
 version: "3.7"
 services:
   web:
-    build: .
+    build: ./Pubilic_XUCHEN_web_app_frame1/flask-backend/
     volumes:
       - ./Pubilic_XUCHEN_web_app_frame1/flask-backend/:/usr/src/app/
     # working_dir: /usr/src/app/
+    # runtime: nvidia
+    # command: nvidia-smi
     env_file:
       - ./.env.prod
     tty: true
+    ports:
+      - "50000:50088"
     depends_on:
       - db_frame
 
