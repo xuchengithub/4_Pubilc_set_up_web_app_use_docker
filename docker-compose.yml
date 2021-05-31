@@ -1,9 +1,13 @@
 version: "3.7"
 services:
   web:
-    build: ./Pubilic_XUCHEN_web_app_use_docker/flask-backend/
+    build:
+      context: ./Pubilic_XUCHEN_web_app_use_docker/flask-backend/
+      target: debug
     volumes:
       - ./Pubilic_XUCHEN_web_app_use_docker/flask-backend/:/usr/src/app/
+      - /tmp/.X11-unix:/tmp/.X11-unix
+      - /tmp/.docker.xauth:/tmp/.docker.xauth
     # working_dir: /usr/src/app/
     # runtime: nvidia
     # command: nvidia-smi
@@ -11,6 +15,7 @@ services:
       - ./.env.prod
     tty: true
     ports:
+      - "5678:5678"
       - "50000:50088"
     depends_on:
       - db_frame
@@ -24,15 +29,17 @@ services:
       - "16544:80"
     depends_on:
       - db_frame
-  #use emal xuchen1522@gmail.com to and password admin to login the pgadmin-postgres
-  #and then use the information of .env.prod.db to connect the  postgres-sql
+    # use emal xuchen1522@gmail.com to and password admin to login the pgadmin-postgres
+    # and then use the information of .env.prod.db to connect the  postgres-sql
 
   db_frame:
     image: postgres:12-alpine
     volumes:
       - postgres_author_data:/var/lib/postgresql/data/
-    ports:
-      - "5555:5432"
+    expose:
+      - "5432"
+    # if you use db_frame name to connect the database you only can connect the inside port 5432
+    # if you want to connect the outside port 5555,you should use virtualmation ip port to connect
     environment:
       TZ: "Asia/Tokyo"
     env_file:
