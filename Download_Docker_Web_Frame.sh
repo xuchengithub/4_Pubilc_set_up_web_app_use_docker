@@ -11,4 +11,4 @@ else
 fi
 
 rm -rf .git
-docker-compose up -d
+# docker-compose up -d
